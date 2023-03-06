@@ -361,7 +361,29 @@ FROM PortfolioProject.dbo.YouTubeInfluencers2022
 
 
 
---Create view need to work on this!!!!
+-----creating view for percentage of subcribers that view UK content 
+
+CREATE TABLE #PercentageSubscribersthatViewUKContent
+(
+Youtuber nvarchar (255),
+Country nvarchar (255),
+Category_2 nvarchar (255),
+avg_views_corrected numeric,
+subscribers_corrected numeric,
+PercentageofViewers numeric
+)
+
+INSERT INTO #PercentageSubscribersthatViewUKContent
+SELECT Youtuber,
+       Country,
+	   Category_2,
+       avg_views_corrected,
+	   subscribers_corrected,
+      (avg_views_corrected/ Subscribers_corrected) *100 AS PercentageofViewers
+FROM PortfolioProject.dbo.YouTubeInfluencers2022
+WHERE Country like 'United Kingdom'
+AND Category_2 IS NOT NULL
+ORDER BY PercentageofViewers DESC
 
 CREATE VIEW PercentageSubscribersthatViewUKContent AS
 SELECT Youtuber,
@@ -373,4 +395,7 @@ SELECT Youtuber,
 FROM PortfolioProject.dbo.YouTubeInfluencers2022
 WHERE Country like 'United Kingdom'
 AND Category_2 IS NOT NULL
-ORDER BY PercentageofViewers DESC
+
+SELECT *
+FROM PercentageSubscribersthatViewUKContent
+
